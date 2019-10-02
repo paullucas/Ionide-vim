@@ -129,6 +129,8 @@ function! s:findWorkspace(dir, cont)
         for found in content.Data.Found
             if workspace.Type == 'none'
                 let workspace = found
+            if workspace.Type == 'directory'
+                let workspace = found
             elseif found.Type == 'solution'
                 if workspace.Type == 'project' then
                     let workspace = found
@@ -172,8 +174,7 @@ endfunction
 function! fsharp#loadWorkspaceAuto()
     if &ft == 'fsharp'
         echom "[FSAC] Loading workspace..."
-        let bufferDirectory = fnamemodify(resolve(expand('%:p')), ':h')
-        call s:findWorkspace(bufferDirectory, function("s:load"))
+        call s:findWorkspace(getcwd(), function("s:load"))
     endif
 endfunction
 
